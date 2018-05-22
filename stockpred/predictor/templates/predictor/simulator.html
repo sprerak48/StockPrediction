@@ -1,0 +1,469 @@
+
+{% load staticfiles %}
+<head>
+  <meta charset="UTF-8">
+  <title>Stock Simulator</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Hind:300,400,500,600'>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+      <link rel="stylesheet" href="{% static 'predictor/css/style.css' %}">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    // tell user that it only works in chrome right now
+    $(document).ready(function(){
+      var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+      if (!isChrome) {
+        $("#browserNote").text("Sorry! Right now this only works in Chrome.");
+      }
+    });
+  </script>
+  <script type="text/javascript">
+  var arr={"apple":"AAPL", "American Airlines Group":"AAL","Adobe Systems":"ADBE"," Analog Devices":"ADI"," Automatic Data Processing":"ADP","  Autodesk":"ADSK","Akamai Technologies":"AKAM","Align Technology":"ALGN","Alexion Pharmaceuticals":"ALXN","Applied Materials":"AMAT","Amgen":"AMGN","Amazon.com":"AMZN","Activision Blizzard":"ATVI","Broadcom Ltd":"AVGO","Baidu":"BIDU","Biogen":"BIIB","Biomarin Pharmaceutical":"BMRN","CA":"CA","Celgene Corp":"CELG","Cerner Corp":"CERN","Check Point Software Technologies":"CHKP","Charter Communications":"CHTR","Ctrip.Com International":"CTRP","Cintas Corp":"CTAS","Cisco Systems Inc":"CSCO"};
+  var ticker;
+    var stock;
+    var a;
+    var accessToken = "2e74df83af754740a9b6e6ae6f06c36e",
+      baseUrl = "https://api.api.ai/v1/",
+      $speechInput,
+      $recBtn,
+      recognition,
+      messageRecording = "Recording...",
+      messageCouldntHear = "I couldn't hear you, could you say that again?",
+      messageInternalError = "Oh no, there has been an internal server error",
+      messageSorry = "I'm sorry, I don't have the answer to that yet.";
+
+    $(document).ready(function() {
+      $speechInput = $("#speech");
+      $recBtn = $("#rec");
+
+      $speechInput.keypress(function(event) {
+        if (event.which == 13) {
+          event.preventDefault();
+          send();
+          $("#speech").val("");
+        }
+      });
+      $recBtn.on("click", function(event) {
+        switchRecognition();
+      });
+      $(".debug__btn").on("click", function() {
+        $(this).next().toggleClass("is-active");
+        return false;
+      });
+    });
+
+    function startRecognition() {
+      recognition = new webkitSpeechRecognition();
+      recognition.continuous = false;
+          recognition.interimResults = false;
+
+      recognition.onstart = function(event) {
+        respond(messageRecording);
+        updateRec();
+      };
+      recognition.onresult = function(event) {
+        recognition.onend = null;
+        
+        var text = "";
+          for (var i = event.resultIndex; i < event.results.length; ++i) {
+            text += event.results[i][0].transcript;
+          }
+          setInput(text);
+        stopRecognition();
+      };
+      recognition.onend = function() {
+        respond(messageCouldntHear);
+        stopRecognition();
+      };
+      recognition.lang = "en-US";
+      recognition.start();
+    }
+  
+    function stopRecognition() {
+      if (recognition) {
+        recognition.stop();
+        recognition = null;
+      }
+      updateRec();
+    }
+
+    function switchRecognition() {
+      if (recognition) {
+        stopRecognition();
+      } else {
+        startRecognition();
+      }
+    }
+
+    function setInput(text) {
+      $speechInput.val(text);
+      send();
+    }
+
+    function updateRec() {
+      $recBtn.text(recognition ? "Stop" : "Speak");
+    }
+
+    function send() {
+      var text = $speechInput.val();
+      $.ajax({
+        type: "POST",
+        url: baseUrl + "query",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        headers: {
+          "Authorization": "Bearer " + accessToken
+        },
+        data: JSON.stringify({query: text, lang: "en", sessionId: "yaydevdiner"}),
+
+        success: function(data) {
+          
+          //console.log(data.result.parameters.stockname);
+          stock=data.result.parameters.stockname;
+         // console.log(stock);
+         if(stock)
+         {
+          realtime(stock);
+         }
+         else
+         {
+          prepareResponse(data,0);
+         }
+          
+        },
+        error: function() {
+          respond(messageInternalError);
+        }
+      });
+    }
+
+
+
+
+
+function realtime(stock){
+   ticker=arr[stock];
+   console.log(123123123);
+   var url = "https://www.quandl.com/api/v3/datasets/WIKI/" + ticker + ".json?api_key=aZTRgHjSXiJ-34BsrWLf";
+ 
+    console.log(ticker, url);
+    $.getJSON(url, function(data) {   
+       a= "Trading Information for "+data.dataset.name+" ,dated : "+data.dataset.data[0][0]+", Open : $"+data.dataset.data[0][1]+", Close : $" +data.dataset.data[0][2]+", High : $" +data.dataset.data[0][3]+", Low : $" +data.dataset.data[0][4]+", Volume : " +data.dataset.data[0][5];
+    //console.log(a);
+      
+    })
+
+    .success(function(data) {
+      prepareResponse(data,a);
+    })
+
+  
+    .error(function() {
+      alert("Please enter a correct company symbol");
+      console.log("User Input Unrecognized"); })
+}
+
+
+
+
+    function prepareResponse(val,val2) {
+
+      if(a)
+      {
+respond(val2);
+      }
+      else
+      {
+      var debugJSON = JSON.stringify(val, undefined, 2),
+        spokenResponse = val.result.speech;
+
+      respond(spokenResponse);
+      debugRespond(debugJSON);
+    }
+  }
+
+    function debugRespond(val) {
+      $("#response").text(val);
+    }
+
+    function respond(val) {
+      if (val == "") {
+        val = messageSorry;
+      }
+
+      if (val !== messageRecording) {
+        var msg = new SpeechSynthesisUtterance();
+        msg.voiceURI = "native";
+        msg.text = val;
+        msg.lang = "en-US";
+        window.speechSynthesis.speak(msg);
+      }
+       if(!a)
+      $("#spokenResponse").addClass("is-active").find(".spoken-response__text").html(val);
+    else
+    {
+      $("#spokenResponse").addClass("is-active").find(".spoken-response__text").html(a);
+      a=null;
+    }
+      
+     // console.log("val"+val);
+    }
+  </script>
+  <style type="text/css">
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    body {
+      
+      background-color: #192837;
+      font-family: "Titillium Web", Arial, sans-serif;
+      font-size: 20px;
+      margin: 0;
+    }
+    #browserNote {
+      color: white;
+    }
+    #githubLink {
+      color: white;
+      margin: 10px;
+    }
+    .container {
+   // position: fixed;
+   align-content: 
+      top: 50%;
+      left: 50%;
+     // -webkit-transform: translate(-50%, -50%);
+    }
+    input {
+      margin-bottom: 40px;
+      outline:none;
+      border-radius: 50px 50px 50px 50px;
+      background-color: #126077;
+      border: 1px solid #3F7F93;
+      color: #A6CAE6;
+      font-family: "Titillium Web";
+      font-size: 20px;
+      line-height: 43px;
+      padding: 0 0.75em;
+      width: 400px;
+      -webkit-transition: all 0.35s ease-in;
+    }
+    input:focus{
+      outline: 0 !important;
+
+    }
+    textarea {
+      background-color: #070F24;
+      border: 1px solid #122435;
+      color: #606B88;
+      padding: 0.5em;
+      width: 100%;
+      -webkit-transition: all 0.35s ease-in;
+    }
+    input:active, input:focus, textarea:active, textarea:focus {
+      outline: 1px solid #48788B;
+    }
+    .btn {
+      border-radius: 50px 50px 50px 50px;
+      background-color: #126178;
+      border: 1px solid #549EAF;
+      color: #549EAF;
+      cursor: pointer;
+      display: inline-block;
+      font-family: "Titillium Web";
+      font-size: 20px;
+      line-height: 43px;
+      padding: 0 0.75em;
+      text-align: center;
+      text-transform: uppercase;
+      -webkit-transition: all 0.35s ease-in;
+    }
+    .btn:hover {
+      background-color: #1888A9;
+      color: #183035;
+    }
+    .debug {
+      bottom: 0;
+     position: fixed;
+      right: 0;
+    }
+    .debug__content {
+      font-size: 14px;
+      max-height: 0;
+      overflow: hidden;
+      -webkit-transition: all 0.35s ease-in;
+    }
+    .debug__content.is-active {
+      display: block;
+      max-height: 500px;
+    }
+    .debug__btn {
+      width: 100%;
+    }
+    .spoken-response {
+      border-radius: 50px 50px 50px 50px;
+      width:50%;
+      margin: auto;
+      max-height: 0;
+      overflow: hidden;
+      -webkit-transition: all 0.35s ease-in;
+    }
+    .spoken-response.is-active {
+      max-height: 400px;
+    }
+    .spoken-response__text {
+      background-color: #040E23;
+      color: #7584A2;
+      padding: 1em;
+    }
+  </style>
+  
+</head>
+
+<body>
+  <nav class="nav" id="menu">
+  <div class="wrap">
+    <div class="brand">
+      <img src="http://img-d02.moneycontrol.co.in/images/common/header/logo.png?v=0.1" alt="" />
+      <span>Stock Simulator</span>
+    </div>
+      <button id="mobile-btn" class="hamburger-btn">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <ul class="top-menu" id="top-menu">
+      <li><a href="#" style="margin-top: 20px;"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+      <li><a href="/predictor/">Home</a></li>
+      <li><a href="#">Simulator</a></li>
+      <li><a href="/predictor/Live_stock_data/">Stocks comparator</a></li>
+      <li><a href="/predictor/predictorinterface/">Stocks forecast</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="content">
+
+
+
+
+
+
+
+
+<!--  
+
+
+
+
+
+    <iframe
+    width="350"
+    height="430"
+    src="https://console.dialogflow.com/api-client/demo/embedded/4f7200e3-511c-4cd3-9ca3-f8acb173b2d3">
+</iframe>
+
+-->
+
+
+
+  
+  <div class="container">
+    <p id='browserNote'>Ask your queries here</p>
+    <input id="speech" type="text">
+    <button id="rec" class="btn">Speak</button>
+    <div id="spokenResponse" class="spoken-response">
+      <div class="spoken-response__text"></div>
+    </div>
+  </div>
+ 
+
+  <link href="https://fonts.googleapis.com/css?family=Titillium+Web:200" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</header>
+
+
+<div id="disqus_thread" style="margin: 250px;">
+  
+</div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://stockpredictor.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<footer class="footer">
+    <div class="row">
+      <div class="col-6">
+        <p><i class="fa fa-phone" aria-hidden="true"></i> 022-3363 4400</p>
+			<p><i class="fa fa-envelope" aria-hidden="true"></i> info@landingpage.com</p>
+      </div>
+      <div class="col-6" style="text-align: right;">
+        <h3>Visit Us</h3>
+        <p>One Indiabulls Centre,
+Tower 1, 5th floor,
+Jupiter Mills Compound,
+Senapati Bapat Marg,
+Elphinstone Road (W),
+Mumbai - 400013</p>
+        </ul>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-12">&copy; 2017 Brand - <a href="#">Facebook</a> - <a href="#">Twitter</a></div>
+    </div>
+</footer>
+  
+    <script  src= "{% static 'predictor/js/index.js' %}"></script>
+      
+</body>
+

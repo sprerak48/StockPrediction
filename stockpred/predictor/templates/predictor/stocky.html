@@ -1,0 +1,215 @@
+
+{% load staticfiles %}
+<head>
+  <meta charset="UTF-8">
+  <title>Stock Simulator</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Hind:300,400,500,600'>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+      <link rel="stylesheet" href="{% static 'predictor/css/style.css' %}">
+      <link rel="stylesheet" href="{% static 'predictor/css/style1.css' %}">
+
+
+
+  <style type="text/css">
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    body {
+      background-color: #192837;
+      font-family: "Titillium Web", Arial, sans-serif;
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .container {
+   // position: fixed;
+   align-content: 
+      top: 50%;
+      left: 50%;
+     // -webkit-transform: translate(-50%, -50%);
+    }
+   
+   
+    
+    </style>
+  
+</head>
+
+<body>
+  <nav class="nav" id="menu">
+  <div class="wrap">
+    <div class="brand">
+      <img src="http://img-d02.moneycontrol.co.in/images/common/header/logo.png?v=0.1" alt="" />
+      <span>Stock Simulator</span>
+    </div>
+      <button id="mobile-btn" class="hamburger-btn">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <ul class="top-menu" id="top-menu">
+      <li><a href="#" style="margin-top: 20px;"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+      <li><a href="/predictor/">Home</a></li>
+      <li><a href="/predictor/simulator/">Simulator</a></li>
+      <li><a href="#">Stocks comparator</a></li>
+            <li><a href="/predictor/predictorinterface/">Stocks forecast</a></li>
+
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="content">
+
+
+
+
+
+
+
+
+<!--  
+
+
+
+
+
+    <iframe
+    width="350"
+    height="430"
+    src="https://console.dialogflow.com/api-client/demo/embedded/4f7200e3-511c-4cd3-9ca3-f8acb173b2d3">
+</iframe>
+
+-->
+
+
+
+  
+  <div class="container">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css">
+        <div id="page-label">
+            <i class="fa fa-usd" aria-hidden="true"></i>tocks
+        </div>
+        
+        <div id="container">
+            
+        </div>
+        
+        <form action="/" method="post">
+            <fieldset class="form-group">
+                <label for="stock-code">Add Stock Code:</label>
+                <p id="error-message">Incorrect or not existing stock code</p>
+                <input name="code" type="text" class="form-control" id="stock-code" placeholder="Enter Stock Code">
+            </fieldset>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        
+        <div class="stock-boxes" style="font-size: 0.6em;">
+            
+                <div class="stock-box" data-code="GOOG">
+                    <button class="btn btn-danger" id="GOOG">X</button>
+                    <p>Alphabet Inc (GOOG)</p>
+                </div>
+            
+                <div class="stock-box" data-code="FB">
+                    <button class="btn btn-danger" id="FB">X</button>
+                    <p>Facebook Inc. (FB)</p>
+                </div>
+            
+                <div class="stock-box" data-code="NYT">
+                    <button class="btn btn-danger" id="NYT">X</button>
+                    <p>New York Times Co. (NYT)</p>
+                </div>
+            
+                <div class="stock-box" data-code="AAPL">
+                    <button class="btn btn-danger" id="AAPL">X</button>
+                    <p>Apple Inc (AAPL)</p>
+                </div>
+            
+        </div>
+    
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    
+
+    <script  src="{% static 'predictor/js/index1.js' %}"></script>
+
+  </div>
+ 
+
+  <link href="https://fonts.googleapis.com/css?family=Titillium+Web:200" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</header>
+
+
+<div id="disqus_thread" style="margin: 250px;">
+  
+</div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://stockpredictor.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<footer class="footer">
+    <div class="row">
+      <div class="col-12">
+        <p><i class="fa fa-phone" aria-hidden="true"></i> 022-3363 4400</p>
+      <p><i class="fa fa-envelope" aria-hidden="true"></i> feedback@moneycontrol.com</p>
+      </div>
+      <div class="col-12" style="text-align: right;margin-left: 50% !important; ">
+        <h3>Visit Us</h3>
+        <p>One Indiabulls Centre,
+Tower 1, 5th floor,
+Jupiter Mills Compound,
+Senapati Bapat Marg,
+Elphinstone Road (W),
+Mumbai - 400013</p>
+        </ul>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-12">&copy; 2017 Brand - <a href="#">Facebook</a> - <a href="#">Twitter</a></div>
+    </div>
+</footer>
+  
+    <script  src= "{% static 'predictor/js/index.js' %}"></script>
+      
+</body>
+
+

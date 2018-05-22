@@ -1,0 +1,42 @@
+   
+            #container {
+                height: 400px;
+                min-width: 310px;
+                margin: 10px 30px 30px 30px;
+            }
+            
+            #page-label {
+                text-align: center;
+                font-size: 48px;
+                font-family: 'Futura', 'Helvetica', sans-serif;
+            }
+            
+            .stock-box {
+                background: #e3e3e3;
+                color: #444;
+                font-weight: 900;
+                display: inline-block;
+                padding: 10px;
+                border-radius: 25px;
+                margin: 10px;
+            }
+            
+            .btn-danger {
+                float: right;
+                background: #FF8F66;
+                border: none;
+                padding: 0px 5px;
+            }
+            
+            form, fieldset, btn-primary, .stock-boxes {
+                display: inline;
+            }
+            
+            form {
+                margin-left: 80px;
+                margin-right: 20px;
+            }
+            
+            #error-message {
+                color: #FF8F66;
+            }

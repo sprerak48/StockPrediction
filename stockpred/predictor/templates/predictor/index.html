@@ -1,0 +1,133 @@
+
+{% load staticfiles %}
+<head>
+  <meta charset="UTF-8">
+  <title>Stock Predictor</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Hind:300,400,500,600'>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+      <link rel="stylesheet" href="{% static 'predictor/css/style.css' %}">
+
+  
+</head>
+
+<body>
+  <nav class="nav" id="menu">
+  <div class="wrap">
+    <div class="brand">
+      <img src="http://img-d02.moneycontrol.co.in/images/common/header/logo.png?v=0.1" alt="http://www.moneycontrol.com/"/>
+      <span></span>
+    </div>
+
+      <button id="mobile-btn" class="hamburger-btn">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <ul class="top-menu" id="top-menu">
+      
+      <li><a href="#">Home</a></li>
+      <li><a href="/predictor/simulator/">Simulator</a></li>
+      <li><a href="/predictor/Live_stock_data/">Stocks comparator</a></li>
+      <li><a href="/predictor/predictorinterface/">Stocks forecast</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="content">
+    <p>Welcome to Stock simulator! Click here to enter the simulator.</p>
+    <button class="cta"><a  href="simulator/">Click Me.</a></button>
+  </div>
+</header>
+
+<main class="main">
+  <section>
+    <div class="tab-row">
+      <div class="col-12">
+        <h2>Regular Section</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos voluptatum repudiandae aliquam, sit quasi ipsa! Quidem dolorum, sit beatae laboriosam error cupiditate veniam commodi, animi, asperiores consequuntur laborum. Quod, deleniti.</p>
+      </div>
+    </section>
+    <section class="feature">
+      <div class="tab-row">
+        <div class="col-12">
+          <h2>Feature Section</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur nihil dignissimos eos repellat perferendis qui corrupti explicabo vel inventore minima.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="tab-row" style="text-align: center;">
+      <div class="center-text">
+      <h1>Testimonials</h1>
+    </div>
+      <div class="col-4">
+        <h2>Raj Patel</h2>
+        <p>It is a very good service, helped me to watch price and keep eyes on my portfolio and create my own portfolio. The most important thing I got to know was my net worth, easily.</p>
+      </div>
+      <div class="col-4">
+        <h2>Prerak Shah</h2>
+        <p>This is a great platform for beginners like me who are new to the equity share market.there are amazing features like watch list portfolio management, investment risk evaluation, etc.</p>
+      </div>
+      <div class="col-4">
+        <h2>Darsh Bijoor</h2>
+        <p>Absolutely fantastic website. Excellent Portfolio manager. Very easy to update and absolutely useful. Auto updating is a dream functionality. I appreciate your hard work.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="disqus_thread" style="margin: 250px;">
+  
+</div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://stockpredictor.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<footer class="footer">
+    <div class="row">
+      <div class="col-6">
+        <p><i class="fa fa-phone" aria-hidden="true"></i> 022-3363 4400</p>
+			<p><i class="fa fa-envelope" aria-hidden="true"></i> feedback@moneycontrol.com</p>
+      </div>
+      <div class="col-6" style="text-align: right;">
+        <h3>Visit Us</h3>
+        <p>One Indiabulls Centre,
+Tower 1, 5th floor,
+Jupiter Mills Compound,
+Senapati Bapat Marg,
+Elphinstone Road (W),
+Mumbai - 400013</p>
+        </ul>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-12">&copy; 2017 Brand - <a href="#">Facebook</a> - <a href="#">Twitter</a></div>
+    </div>
+</footer>
+  
+    <script  src= "{% static 'predictor/js/index.js' %}"></script>
+      
+</body>
+
